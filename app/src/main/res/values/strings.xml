@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">LocationMarker</string>
+    <string name="title_activity_maps_address_locate">Locate Address</string>
+    <string name="google_maps_key">AIzaSyDUm9VXfOUkHY3Z6lLo6YdhaaoFj8a0J30</string>
+    <string name="findlocation">Find Location</string>
+
+</resources>
