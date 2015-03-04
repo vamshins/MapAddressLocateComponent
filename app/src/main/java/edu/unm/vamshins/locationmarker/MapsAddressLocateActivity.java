@@ -1,5 +1,7 @@
 package edu.unm.vamshins.locationmarker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.location.Address;
 import android.location.Criteria;
@@ -151,5 +153,21 @@ public class MapsAddressLocateActivity extends FragmentActivity {
      */
     private void setUpMap() {
 //        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    }
+
+
+    private Boolean exit = false;
+    @Override
+    public void onBackPressed(){
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        MapsAddressLocateActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 }
