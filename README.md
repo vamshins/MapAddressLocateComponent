@@ -12,4 +12,5 @@ This is used to give the information on the address of current location of the m
 This is done using the Android Studio.
 
 ### Demo Screens:
-https://github.com/vamshins/MapAddressLocateComponent/blob/master/Screenshots/Current_Address.jpg
+![Alt text](https://github.com/vamshins/MapAddressLocateComponent/blob/master/Screenshots/Current_Address.jpg "Current Location Screenshot")
+
