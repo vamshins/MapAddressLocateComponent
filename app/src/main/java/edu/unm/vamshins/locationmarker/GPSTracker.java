@@ -8,17 +8,33 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+import java.util.Locale;
 
 public final class GPSTracker implements LocationListener {
 
     private final Context mContext;
-
+    CameraPosition camPos;
+    CameraUpdate camUpd3;
+Marker marker;
     // flag for GPS status
     public boolean isGPSEnabled = false;
 
@@ -41,8 +57,13 @@ public final class GPSTracker implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GPSTracker(Context context) {
+    GoogleMap mMap;
+
+    TextView addressLocation;
+    public GPSTracker(Context context, TextView addresslocation, GoogleMap mMap) {
         this.mContext = context;
+        this.addressLocation = addresslocation;
+        this.mMap = mMap;
         getLocation();
     }
 
@@ -197,7 +218,42 @@ public final class GPSTracker implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-//        getLocation();
+        /*try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        getLocation();
+        Log.v("Location", latitude + " - " + longitude);
+//        marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Marker"));
+        Geocoder geocoder = new Geocoder(mContext, Locale.ENGLISH);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                addressLocation.setText(strReturnedAddress.toString());
+            } else {
+                addressLocation.setText("No Address returned!");
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            addressLocation.setText("Canont get Address!");
+        }
+
+        camPos = new CameraPosition.Builder()
+                .target(new LatLng(latitude, longitude))
+                .zoom(18)
+//                .tilt(70)
+                .build();
+
+        camUpd3 =
+                CameraUpdateFactory.newCameraPosition(camPos);
     }
 
     @Override

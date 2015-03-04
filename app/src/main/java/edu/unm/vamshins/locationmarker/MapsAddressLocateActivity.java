@@ -62,9 +62,9 @@ public class MapsAddressLocateActivity extends FragmentActivity {
 
 //        TextView latlongposition = (TextView) findViewById(R.id.latlongposition);
         TextView addresslocation = (TextView) findViewById(R.id.addresslocation);
-        GPSTracker mGPS = new GPSTracker(this);
+        GPSTracker mGPS = new GPSTracker(this, addresslocation, mMap);
 
-        if (mGPS.canGetLocation) {
+/*        if (mGPS.canGetLocation) {
             mGPS.getLocation();
 //            latitude = 35.086905;
 //            longitude = -106.643520;
@@ -105,46 +105,8 @@ public class MapsAddressLocateActivity extends FragmentActivity {
                 .build();
 
         CameraUpdate camUpd3 =
-                CameraUpdateFactory.newCameraPosition(camPos);
+                CameraUpdateFactory.newCameraPosition(camPos);*/
 
-        animateMarker(marker, new LatLng(latitude, longitude), false);
-    }
-
-    public void animateMarker(final Marker marker, final LatLng toPosition,
-                              final boolean hideMarker) {
-        final Handler handler = new Handler();
-        final long start = SystemClock.uptimeMillis();
-        Projection proj = mMap.getProjection();
-        Point startPoint = proj.toScreenLocation(marker.getPosition());
-        final LatLng startLatLng = proj.fromScreenLocation(startPoint);
-        final long duration = 500;
-
-        final Interpolator interpolator = new LinearInterpolator();
-
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                long elapsed = SystemClock.uptimeMillis() - start;
-                float t = interpolator.getInterpolation((float) elapsed
-                        / duration);
-                double lng = t * toPosition.longitude + (1 - t)
-                        * startLatLng.longitude;
-                double lat = t * toPosition.latitude + (1 - t)
-                        * startLatLng.latitude;
-                marker.setPosition(new LatLng(lat, lng));
-
-                if (t < 1.0) {
-                    // Post again 16ms later.
-                    handler.postDelayed(this, 16);
-                } else {
-                    if (hideMarker) {
-                        marker.setVisible(false);
-                    } else {
-                        marker.setVisible(true);
-                    }
-                }
-            }
-        });
     }
 
     @Override
